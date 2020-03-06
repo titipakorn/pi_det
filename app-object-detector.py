@@ -14,7 +14,7 @@ from io import BytesIO
 
 LOG = Logger('app-face-detector')
 
-URL = ""
+URL = "http://52.74.221.188/backend/track/"
 
 
 def app(video_link, video_name, show, record, flip_hor, flip_ver):
