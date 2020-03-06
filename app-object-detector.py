@@ -53,10 +53,10 @@ def app(video_link, video_name, show, record, flip_hor, flip_ver):
             im.save(byte_io, 'png')
             byte_io.seek(0)
             files[f'file{i}'] = byte_io
-
-        grequests.post(url=URL, data={'bboxes': bboxes}, files=files)
-
-        print(files, bboxes)
+        if(len(bboxes)):
+            response = grequests.post(
+                url=URL, data={'bboxes': bboxes}, files=files)
+            print(response)
 
         _prx_t = time.time() - _start_t
 
