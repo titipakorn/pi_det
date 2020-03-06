@@ -14,24 +14,24 @@ import json
 import requests
 from io import BytesIO
 
-import logging
+# import logging
 
-# These two lines enable debugging at httplib level (requests->urllib3->http.client)
-# You will see the REQUEST, including HEADERS and DATA, and RESPONSE with HEADERS but without DATA.
-# The only thing missing will be the response.body which is not logged.
-try:
-    import http.client as http_client
-except ImportError:
-    # Python 2
-    import httplib as http_client
-http_client.HTTPConnection.debuglevel = 1
+# # These two lines enable debugging at httplib level (requests->urllib3->http.client)
+# # You will see the REQUEST, including HEADERS and DATA, and RESPONSE with HEADERS but without DATA.
+# # The only thing missing will be the response.body which is not logged.
+# try:
+#     import http.client as http_client
+# except ImportError:
+#     # Python 2
+#     import httplib as http_client
+# http_client.HTTPConnection.debuglevel = 1
 
-# You must initialize logging, otherwise you'll not see debug output.
-logging.basicConfig()
-logging.getLogger().setLevel(logging.DEBUG)
-requests_log = logging.getLogger("requests.packages.urllib3")
-requests_log.setLevel(logging.DEBUG)
-requests_log.propagate = True
+# # You must initialize logging, otherwise you'll not see debug output.
+# logging.basicConfig()
+# logging.getLogger().setLevel(logging.DEBUG)
+# requests_log = logging.getLogger("requests.packages.urllib3")
+# requests_log.setLevel(logging.DEBUG)
+# requests_log.propagate = True
 
 LOG = Logger('app-face-detector')
 
@@ -75,8 +75,8 @@ def app(video_link, video_name, show, record, flip_hor, flip_ver):
             byte_io.seek(0)
             files[f'file{i}'] = byte_io
         if(len(bboxes)):
-            response = requests.post(
-                url=URL, json={'bboxes': json.dumps(bboxes)})
+            requests.post(
+                url=URL, json={'bboxes': json.dumps(bboxes)}, files=files)
 
         _prx_t = time.time() - _start_t
 
