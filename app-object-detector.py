@@ -56,6 +56,8 @@ def app(video_link, video_name, show, record, flip_hor, flip_ver):
 
         grequests.post(url=URL, data={'bboxes': bboxes}, files=files)
 
+        print(files, bboxes)
+
         _prx_t = time.time() - _start_t
 
         # if len(bboxes):
