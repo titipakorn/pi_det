@@ -9,6 +9,8 @@ from altusi.logger import Logger
 
 from altusi.objectdetector import ObjectDetector
 
+import json
+
 import requests
 from io import BytesIO
 
@@ -74,7 +76,7 @@ def app(video_link, video_name, show, record, flip_hor, flip_ver):
             files[f'file{i}'] = byte_io
         if(len(bboxes)):
             response = requests.post(
-                url=URL, data={'bboxes': bboxes}, files=files)
+                url=URL, data={'bboxes': json.dumps(bboxes)})
 
         _prx_t = time.time() - _start_t
 
