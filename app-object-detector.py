@@ -76,7 +76,7 @@ def app(video_link, video_name, show, record, flip_hor, flip_ver):
             files[f'file{i}'] = byte_io
         if(len(bboxes)):
             response = requests.post(
-                url=URL, data={'bboxes': json.dumps(bboxes)})
+                url=URL, json={'bboxes': json.dumps(bboxes)})
 
         _prx_t = time.time() - _start_t
 
