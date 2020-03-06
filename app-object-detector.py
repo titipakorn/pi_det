@@ -9,7 +9,7 @@ from altusi.logger import Logger
 
 from altusi.objectdetector import ObjectDetector
 
-import grequests
+import requests
 from io import BytesIO
 
 LOG = Logger('app-face-detector')
@@ -54,9 +54,9 @@ def app(video_link, video_name, show, record, flip_hor, flip_ver):
             byte_io.seek(0)
             files[f'file{i}'] = byte_io
         if(len(bboxes)):
-            response = grequests.post(
-                url=URL, data={'bboxes': bboxes}, files=files)
-            print(response)
+            if(cnt_frm % 10 == 0):
+                response = requests.post(
+                    url=URL, data={'bboxes': bboxes}, files=files)
 
         _prx_t = time.time() - _start_t
 
