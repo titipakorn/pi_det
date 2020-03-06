@@ -45,7 +45,7 @@ class ObjectDetector:
             y1 = max(0, int(det[4] * H))
             x2 = min(W, int(det[5] * W))
             y2 = min(H, int(det[6] * H))
-            crop = image[y1:y2, x1:x2]
+            crop = image.crop((x1, y1, x2, y2))
             if x1 != x2 and y1 != y2:
                 images.append(crop)
             bboxes.append((x1, y1, x2, y2))
