@@ -35,10 +35,10 @@ def app(video_link, video_name, show, record, flip_hor, flip_ver):
     while cap.isOpened():
         _, frm = cap.read()
         if not _:
-            LOG.info('Reached the end of Video source')
-            break
+            continue
         cnt_frm += 1
-
+        if(cnt_frm % 5 != 0):
+            continue
         if flip_ver:
             frm = cv.flip(frm, 0)
         if flip_hor:
@@ -54,9 +54,8 @@ def app(video_link, video_name, show, record, flip_hor, flip_ver):
             byte_io.seek(0)
             files[f'file{i}'] = byte_io
         if(len(bboxes)):
-            if(cnt_frm % 10 == 0):
-                response = requests.post(
-                    url=URL, data={'bboxes': bboxes}, files=files)
+            response = requests.post(
+                url=URL, data={'bboxes': bboxes}, files=files)
 
         _prx_t = time.time() - _start_t
 
