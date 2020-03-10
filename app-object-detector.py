@@ -80,7 +80,6 @@ def app(video_link, video_name, show, record, flip_hor, flip_ver):
             files.append(('files', byte_io))
         files.append(('bboxes', (None, json.dumps(
             bboxes), 'application/json')))
-        print(files)
         if(len(bboxes)):
             requests.post(
                 url=URL, files=files)
