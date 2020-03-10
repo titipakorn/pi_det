@@ -72,17 +72,18 @@ def app(video_link, video_name, show, record, flip_hor, flip_ver):
 
         _start_t = time.time()
         images, bboxes = object_detector.getObjects(frm, def_score=0.5)
-        files = []
-        for im in images:
-            byte_io = BytesIO()
-            im.save(byte_io, 'png')
-            byte_io.seek(0)
-            files.append(('files', byte_io))
-        files.append(('bboxes', (None, json.dumps(
-            bboxes), 'application/json')))
-        if(len(bboxes)):
-            requests.post(
-                url=URL, files=files)
+        if images:
+            files = []
+            for im in images:
+                byte_io = BytesIO()
+                im.save(byte_io, 'png')
+                byte_io.seek(0)
+                files.append(('files', byte_io))
+            files.append(('bboxes', (None, json.dumps(
+                bboxes), 'application/json')))
+            if(len(bboxes)):
+                requests.post(
+                    url=URL, files=files)
 
         #_prx_t = time.time() - _start_t
 
