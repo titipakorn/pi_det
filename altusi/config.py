@@ -30,4 +30,4 @@ PERSON_DET_XML = os.path.join(
 PERSON_DET_BIN = os.path.join(
     MODEL_DIR, 'person-detection-retail-0013-fp16.bin')
 
-RTSP_URL = "rtsp://admin:dtac1234@192.168.1.109:10544/tcp/av0_0"
+RTSP_URL = "http://192.168.1.109:2871/img/snapshot.cgi?user=admin&pwd=dtac1234&res=0"

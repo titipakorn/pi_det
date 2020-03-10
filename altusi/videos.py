@@ -1,6 +1,10 @@
 # import the necessary packages
 import datetime
 from threading import Thread
+from PIL import Image
+import numpy as np
+from io import BytesIO
+import requests
 import cv2
 
 
@@ -40,8 +44,12 @@ class WebcamVideoStream:
     def __init__(self, src=0):
         # initialize the video camera stream and read the first frame
         # from the stream
-        self.stream = cv2.VideoCapture(src)
-        (self.grabbed, self.frame) = self.stream.read()
+        #self.stream = cv2.VideoCapture(src)
+        self.URL = src
+        r = requests.get(self.URL)
+        i = Image.open(BytesIO(r.content))
+        frame = np.array(i)
+        self.frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
         # initialize the variable used to indicate if the thread should
         # be stopped
@@ -60,7 +68,10 @@ class WebcamVideoStream:
                 return
             try:
                 # otherwise, read the next frame from the stream
-                (self.grabbed, self.frame) = self.stream.read()
+                r = requests.get(self.URL)
+                i = Image.open(BytesIO(r.content))
+                frame = np.array(i)
+                self.frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             except:
                 print('Error no read!')
 
