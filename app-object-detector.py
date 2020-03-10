@@ -9,10 +9,15 @@ from altusi.logger import Logger
 
 from altusi.objectdetector import ObjectDetector
 
+from altusi.videos import WebcamVideoStream
+
 import json
 
 import requests
 from io import BytesIO
+import os
+
+os.environ["OPENCV_FFMPEG_CAPTURE_OPTIONS"] = "rtsp_transport;tcp"
 
 # import logging
 
@@ -43,8 +48,10 @@ def app(video_link, video_name, show, record, flip_hor, flip_ver):
     object_detector = ObjectDetector()
 
     # initialize Video Capturer
-    cap = cv.VideoCapture(video_link)
-    (W, H), FPS = imgproc.cameraCalibrate(cap)
+    #cap = cv.VideoCapture(video_link)
+    cap = WebcamVideoStream(
+        src=cfg.RTSP_URL).start()
+    (W, H), FPS = imgproc.cameraCalibrate(cap.stream)
     LOG.info('Camera Info: ({}, {}) - {:.3f}'.format(W, H, FPS))
 
     if record:
@@ -53,9 +60,9 @@ def app(video_link, video_name, show, record, flip_hor, flip_ver):
                                 cv.VideoWriter_fourcc(*'XVID'), 20, (1280, 720))
 
     cnt_frm = 0
-    while cap.isOpened():
-        _, frm = cap.read()
-        if not _:
+    while True:
+        frm = cap.read()
+        if not frm:
             continue
         cnt_frm += 1
         if(cnt_frm % 5 != 0):
@@ -82,25 +89,25 @@ def app(video_link, video_name, show, record, flip_hor, flip_ver):
 
         _prx_t = time.time() - _start_t
 
-        if len(bboxes):
-            frm = vis.plotBBoxes(frm, bboxes, len(bboxes) * ['person'])
-        frm = vis.plotInfo(frm, 'Raspberry Pi - FPS: {:.3f}'.format(1/_prx_t))
-        frm = cv.cvtColor(np.asarray(frm), cv.COLOR_BGR2RGB)
+        # if len(bboxes):
+        #     frm = vis.plotBBoxes(frm, bboxes, len(bboxes) * ['person'])
+        # frm = vis.plotInfo(frm, 'Raspberry Pi - FPS: {:.3f}'.format(1/_prx_t))
+        # frm = cv.cvtColor(np.asarray(frm), cv.COLOR_BGR2RGB)
 
-        if record:
-            writer.write(frm)
+        # if record:
+        #     writer.write(frm)
 
-        if show:
-            cv.imshow(video_name, frm)
-            key = cv.waitKey(1)
-            if key in [27, ord('q')]:
-                LOG.info('Interrupted by Users')
-                break
+        # if show:
+        #     cv.imshow(video_name, frm)
+        #     key = cv.waitKey(1)
+        #     if key in [27, ord('q')]:
+        #         LOG.info('Interrupted by Users')
+        #         break
 
-    if record:
-        writer.release()
-    cap.release()
-    cv.destroyAllWindows()
+    # if record:
+    #     writer.release()
+    # cap.release()
+    # cv.destroyAllWindows()
 
 
 def main(args):
