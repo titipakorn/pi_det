@@ -56,9 +56,8 @@ def app(video_link, video_name, show, record, flip_hor, flip_ver):
     #     writer = cv.VideoWriter(video_name+time_str+'.avi',
     #                             cv.VideoWriter_fourcc(*'XVID'), 20, (1280, 720))
 
-    cnt_frm = 0
+    #cnt_frm = 0
     while True:
-        requests.get(URL)
         frm = cap.read()
         if frm is None:
             continue
