@@ -57,14 +57,14 @@ def app(video_link, video_name, show, record, flip_hor, flip_ver):
     #                             cv.VideoWriter_fourcc(*'XVID'), 20, (1280, 720))
 
     cnt_frm = 0
-    while cap.isOpened():
+    while True:
         requests.get(URL)
-        _, frm = cap.read()
-        if not _:
+        frm = cap.read()
+        if frm is None:
             continue
-        cnt_frm += 1
-        if(cnt_frm % 5 != 0):
-            continue
+        #cnt_frm += 1
+        # if(cnt_frm % 5 != 0):
+        #     continue
         if flip_ver:
             frm = cv.flip(frm, 0)
         if flip_hor:
@@ -85,27 +85,27 @@ def app(video_link, video_name, show, record, flip_hor, flip_ver):
             requests.post(
                 url=URL, files=files)
 
-        _prx_t = time.time() - _start_t
+        #_prx_t = time.time() - _start_t
 
-        if len(bboxes):
-            frm = vis.plotBBoxes(frm, bboxes, len(bboxes) * ['person'])
-        frm = vis.plotInfo(frm, 'Raspberry Pi - FPS: {:.3f}'.format(1/_prx_t))
-        frm = cv.cvtColor(np.asarray(frm), cv.COLOR_BGR2RGB)
+        # if len(bboxes):
+        #     frm = vis.plotBBoxes(frm, bboxes, len(bboxes) * ['person'])
+        # frm = vis.plotInfo(frm, 'Raspberry Pi - FPS: {:.3f}'.format(1/_prx_t))
+        # frm = cv.cvtColor(np.asarray(frm), cv.COLOR_BGR2RGB)
 
-        if record:
-            writer.write(frm)
+        # if record:
+        #     writer.write(frm)
 
-        if show:
-            cv.imshow(video_name, frm)
-            key = cv.waitKey(1)
-            if key in [27, ord('q')]:
-                LOG.info('Interrupted by Users')
-                break
+        # if show:
+        #     cv.imshow(video_name, frm)
+        #     key = cv.waitKey(1)
+        #     if key in [27, ord('q')]:
+        #         LOG.info('Interrupted by Users')
+        #         break
 
-    if record:
-        writer.release()
-    cap.release()
-    cv.destroyAllWindows()
+    # if record:
+    #     writer.release()
+    # cap.release()
+    # cv.destroyAllWindows()
 
 
 def main(args):
