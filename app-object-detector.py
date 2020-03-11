@@ -51,10 +51,10 @@ def app(video_link, video_name, show, record, flip_hor, flip_ver):
     # (W, H), FPS = imgproc.cameraCalibrate(cap.stream)
     # LOG.info('Camera Info: ({}, {}) - {:.3f}'.format(W, H, FPS))
 
-    # if record:
-    #     time_str = time.strftime(cfg.TIME_FM)
-    #     writer = cv.VideoWriter(video_name+time_str+'.avi',
-    #                             cv.VideoWriter_fourcc(*'XVID'), 20, (1280, 720))
+    if record:
+        time_str = time.strftime(cfg.TIME_FM)
+        writer = cv.VideoWriter(video_name+time_str+'.avi',
+                                cv.VideoWriter_fourcc(*'XVID'), 20, (1280, 720))
 
     #cnt_frm = 0
     while True:
@@ -85,15 +85,15 @@ def app(video_link, video_name, show, record, flip_hor, flip_ver):
                 requests.post(
                     url=URL, files=files)
 
-        #_prx_t = time.time() - _start_t
+        _prx_t = time.time() - _start_t
 
-        # if len(bboxes):
-        #     frm = vis.plotBBoxes(frm, bboxes, len(bboxes) * ['person'])
-        # frm = vis.plotInfo(frm, 'Raspberry Pi - FPS: {:.3f}'.format(1/_prx_t))
-        # frm = cv.cvtColor(np.asarray(frm), cv.COLOR_BGR2RGB)
+        if len(bboxes):
+            frm = vis.plotBBoxes(frm, bboxes, len(bboxes) * ['person'])
+        frm = vis.plotInfo(frm, 'Raspberry Pi - FPS: {:.3f}'.format(1/_prx_t))
+        frm = cv.cvtColor(np.asarray(frm), cv.COLOR_BGR2RGB)
 
-        # if record:
-        #     writer.write(frm)
+        if record:
+            writer.write(frm)
 
         # if show:
         #     cv.imshow(video_name, frm)
@@ -102,8 +102,8 @@ def app(video_link, video_name, show, record, flip_hor, flip_ver):
         #         LOG.info('Interrupted by Users')
         #         break
 
-    # if record:
-    #     writer.release()
+    if record:
+        writer.release()
     # cap.release()
     # cv.destroyAllWindows()
 
