@@ -82,8 +82,11 @@ def app(video_link, video_name, show, record, flip_hor, flip_ver):
             files.append(('bboxes', (None, json.dumps(
                 bboxes), 'application/json')))
             if(len(bboxes)):
-                requests.post(
-                    url=URL, files=files)
+                try:
+                    requests.post(
+                        url=URL, files=files)
+                except:
+                    continue
 
         _prx_t = time.time() - _start_t
 

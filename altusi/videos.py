@@ -41,7 +41,7 @@ class WebcamVideoStream:
                 frame = np.array(i)
                 self.frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             except:
-                print('Error no read!')
+                pass
 
     def read(self):
         # return the frame most recently read
